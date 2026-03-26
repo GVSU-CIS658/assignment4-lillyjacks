@@ -1,33 +1,33 @@
 <template>
   <div
-    v-if="props.type !== 'No Creamer'"
     class="froth"
-    :style="{ backgroundColor: getColor() }"
+    :style="{
+      '--bg-color': bgColor
+    }"
   >
-    <div v-for="i in 5" :key="i" class="foam"></div>
+    <div
+      v-for="n in 5"
+      :key="n"
+      class="foam"
+      :style="{ '--creamer-color': creamerColor }"
+    ></div>
   </div>
 </template>
 
 <script setup lang="ts">
-type Props = {
-  type: string;
-};
+import { useBeverageStore } from "../stores/beverageStore";
+import { storeToRefs } from "pinia";
+import { computed } from "vue";
 
-const props = defineProps<Props>();
+const beverageStore = useBeverageStore();
+const { currentCreamer } = storeToRefs(beverageStore);
 
-const getColor = () => {
-  switch (props.type) {
-    case "Milk":
-      return "#fff4e3";
-    case "Cream":
-      return "#fff8d3";
-    case "Half & Half":
-      return "#fff5c3";
-    default:
-      return "transparent";
-  }
-};
+const creamerColor = computed(() => currentCreamer.value.color);
+
+// background behind foam (cup surface)
+const bgColor = "#c6c6c6";
 </script>
+
 <style lang="scss" scoped>
 .froth {
   overflow: visible;
@@ -35,12 +35,13 @@ const getColor = () => {
   position: relative;
   height: 20%;
   width: 100%;
-  background-color: #c6c6c6;
+  background-color: var(--bg-color);
   animation: pour-tea 2s 2s forwards;
 }
+
 .foam {
   display: block;
-  background: #e4e0d2;
+  background: var(--creamer-color);
   border-radius: 30px;
   height: 40px;
   width: 40px;

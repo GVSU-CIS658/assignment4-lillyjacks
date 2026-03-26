@@ -1,29 +1,14 @@
 <template>
-  <div
-    class="baseBeverage"
-    :style="{ backgroundColor: getColor() }"
-  ></div>
+  <div class="baseBeverage" :style="{'--base-color': baseColor}"></div>
 </template>
 
 <script setup lang="ts">
-type Props = {
-  type: string;
-};
+  import { useBeverageStore } from '../stores/beverageStore';
+  import { storeToRefs } from 'pinia';
+  import { computed } from 'vue';
 
-const props = defineProps<Props>();
-
-const getColor = () => {
-  switch (props.type) {
-    case "Coffee":
-      return "#65472b"; // dark brown
-    case "Green Tea":
-      return "#107301"; // green
-    case "Black Tea":
-      return "#000000"; // dark tea
-    default:
-      return "#ccc";
-  }
-};
+  const { currentBase } = storeToRefs(useBeverageStore());
+  const baseColor = computed(() => currentBase.value.color);
 </script>
 
 <style scoped>
@@ -34,6 +19,6 @@ const getColor = () => {
   bottom: 0;
   animation: pour-tea 2s;
   z-index: 300;
-  /* // border-radius: 0.05em 0.05em 2.2em 2.2em; */
+  background-color: var(--base-color);
 }
 </style>
