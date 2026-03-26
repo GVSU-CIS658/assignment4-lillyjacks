@@ -1,8 +1,30 @@
 <template>
-  <div class="baseBeverage"></div>
+  <div
+    class="baseBeverage"
+    :style="{ backgroundColor: getColor() }"
+  ></div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+type Props = {
+  type: string;
+};
+
+const props = defineProps<Props>();
+
+const getColor = () => {
+  switch (props.type) {
+    case "Coffee":
+      return "#65472b"; // dark brown
+    case "Green Tea":
+      return "#107301"; // green
+    case "Black Tea":
+      return "#000000"; // dark tea
+    default:
+      return "#ccc";
+  }
+};
+</script>
 
 <style scoped>
 .baseBeverage {

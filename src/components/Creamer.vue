@@ -1,10 +1,33 @@
 <template>
-  <div class="froth">
-    <div v-for=" in 5" class="foam"></div>
+  <div
+    v-if="props.type !== 'No Creamer'"
+    class="froth"
+    :style="{ backgroundColor: getColor() }"
+  >
+    <div v-for="i in 5" :key="i" class="foam"></div>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+type Props = {
+  type: string;
+};
+
+const props = defineProps<Props>();
+
+const getColor = () => {
+  switch (props.type) {
+    case "Milk":
+      return "#fff4e3";
+    case "Cream":
+      return "#fff8d3";
+    case "Half & Half":
+      return "#fff5c3";
+    default:
+      return "transparent";
+  }
+};
+</script>
 <style lang="scss" scoped>
 .froth {
   overflow: visible;
